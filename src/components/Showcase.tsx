@@ -28,8 +28,8 @@ export default function Showcase({
   const host = project.live?.label ?? project.name;
 
   return (
-    <figure className={phone && img.mobile ? "pb-[9%] pr-[7%]" : undefined}>
-      <div className="relative">
+    <figure>
+      <div className={`relative ${phone && img.mobile ? "mb-[10%] mr-[7%]" : ""}`}>
         {/* Browser window */}
         <div className="overflow-hidden rounded-[10px] border border-[color-mix(in_oklab,var(--c-paper)_16%,transparent)] bg-surface shadow-[0_30px_70px_rgba(0,0,0,0.35)]" data-visual>
           <div className="flex items-center gap-3 border-b border-[color-mix(in_oklab,var(--c-paper)_12%,transparent)] px-3 py-2" aria-hidden>

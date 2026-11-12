@@ -133,6 +133,7 @@ const projects: Project[] = [
   },
   {
     ...base("survey-engine"),
+    image: { ...base("survey-engine").image!, alt: "Page d'accueil de Selvitys : plateforme d'études avec un tableau de résultats d'enquête et un graphique de réponses", note: "Site public du produit, capture de nov. 2026 (l'app d'enquêtes nécessite un compte)." },
     name: "Moteur d'enquêtes",
     kind: "Plateforme d'enquêtes d'entreprise, web et mobile",
     role: "Développeur Full-Stack",

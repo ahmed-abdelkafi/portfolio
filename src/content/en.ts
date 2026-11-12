@@ -177,7 +177,8 @@ export const en: Content = {
       ],
       stack: ["Nest.js", "Supabase", "PostgreSQL", "React", "React Native", "Redux Toolkit"],
       results: ["Published on Google Play and the App Store"],
-      live: { label: "app.selvitys.fr", href: "https://app.selvitys.fr/" },
+      live: { label: "selvitys.fr", href: "https://selvitys.fr/" },
+      image: { src: "/work/survey-engine-desktop.webp", mobile: "/work/survey-engine-mobile.webp", alt: "Selvitys home page: market-research platform with a survey results table and response-rate chart", note: "Public site of the product, captured Nov 2026 (the survey app itself requires an account)." },
       motif: "grid", featured: true,
     },
     {

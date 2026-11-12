@@ -67,3 +67,13 @@ Static export served by Cloudflare Workers static assets (`wrangler.jsonc`, acco
 ```bash
 NEXT_PUBLIC_SITE_URL=https://ahmed-abdelkafi.abdelkafi-ahmed-techsup.workers.dev npm run deploy
 ```
+
+## Theme customizer
+
+A floating "Theme" control (bottom-left) opens a live customizer: 5 base colours
+(`--c-ink`, `--c-surface`, `--c-paper`, `--c-muted`, `--c-accent`) drive every semantic
+role in `globals.css`. Presets, harmony generation with locks, HEX/native pickers,
+WCAG contrast, live preview, saved themes and reset. Config: `src/lib/themes.ts`,
+state: `src/components/ThemeProvider.tsx`, UI: `src/components/ThemeCustomizer.tsx`.
+The default is always the signature palette #1C1C1C / #F2EDE3 / #B3261E; a visitor's
+own choice is kept in localStorage (applied before first paint, no flash).

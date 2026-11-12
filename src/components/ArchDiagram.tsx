@@ -60,7 +60,7 @@ export default function ArchDiagram({ arch, locale }: { arch: Arch; locale: Loca
             <g key={`${a}-${b}`}>
               <path data-edge d={d} fill="none" stroke="currentColor" strokeOpacity="0.45" strokeWidth="1.5" />
               {!reduce && (
-                <circle r="4" fill="#b3261e">
+                <circle r="4" fill="var(--c-accent)">
                   <animateMotion dur={`${2.4 + (i % 3) * 0.6}s`} begin={`${i * 0.35}s`} repeatCount="indefinite" path={d} />
                 </circle>
               )}
@@ -73,8 +73,8 @@ export default function ArchDiagram({ arch, locale }: { arch: Arch; locale: Loca
           const ext = n.layer === "ext";
           return (
             <g key={n.id} data-node>
-              <rect x={x} y={y} width={NW} height={NH} fill="var(--bg)" stroke={ext ? "currentColor" : "#b3261e"} strokeOpacity={ext ? 0.35 : 1} strokeDasharray={ext ? "4 4" : undefined} />
-              <text x={x + 12} y={y + 18} fontFamily="var(--font-mono-face)" fontSize="9.5" letterSpacing="1.5" fill="#b3261e">
+              <rect x={x} y={y} width={NW} height={NH} fill="var(--bg)" stroke={ext ? "currentColor" : "var(--c-accent)"} strokeOpacity={ext ? 0.35 : 1} strokeDasharray={ext ? "4 4" : undefined} />
+              <text x={x + 12} y={y + 18} fontFamily="var(--font-mono-face)" fontSize="9.5" letterSpacing="1.5" fill="var(--c-accent)">
                 {layerName[n.layer][locale].toUpperCase()}
               </text>
               <text x={x + 12} y={y + 41} fontFamily="var(--font-sans-face)" fontSize="16" fontWeight="700" fill="currentColor">

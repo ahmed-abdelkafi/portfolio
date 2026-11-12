@@ -1,24 +1,13 @@
 /**
- * FINAL CUT — the portfolio as an auteur film.
- * Exactly three colours: charcoal, bone and a restrained deep red.
+ * FINAL CUT — scene helpers. Colours live in the theme system
+ * (src/lib/themes.ts + CSS variables in globals.css), never here.
  */
-export const palette = {
-  charcoal: "#1c1c1c",
-  bone: "#f2ede3",
-  red: "#b3261e",
-} as const;
-
 export type Scene = "dark" | "light";
-
-export const scenes: Record<Scene, { bg: string; fg: string }> = {
-  dark: { bg: palette.charcoal, fg: palette.bone },
-  light: { bg: palette.bone, fg: palette.charcoal },
-};
 
 /** Scene numbers used across the page, like a shooting script. */
 export const sceneNo = (n: number) => `SC.${String(n).padStart(2, "0")}`;
 
-/** Fake-free timecode helper: frames are derived from a 0–1 progress value, not invented data. */
+/** Timecode derived from a 0–1 scroll progress value. */
 export const timecode = (progress: number, totalSeconds = 120) => {
   const t = Math.max(0, Math.min(1, progress)) * totalSeconds;
   const m = Math.floor(t / 60);

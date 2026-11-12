@@ -99,7 +99,7 @@ export default function CodeWindow({ person, locale }: { person: Content["person
   const done = shown >= total;
 
   return (
-    <div className="w-full border border-bone/15 bg-[#232323] text-bone shadow-[0_40px_80px_rgba(0,0,0,0.45)]" role="img" aria-label={`${person.name}: ${person.role}`}>
+    <div className="w-full border border-bone/15 bg-surface text-bone shadow-[0_40px_80px_rgba(0,0,0,0.45)]" role="img" aria-label={`${person.name}: ${person.role}`}>
       <div className="mono flex items-center justify-between border-b border-bone/15 px-4 py-2.5 text-[10px]">
         <span className="flex gap-4">
           <span className="border-b border-red pb-1 text-bone">ahmed.ts</span>

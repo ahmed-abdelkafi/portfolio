@@ -3,17 +3,59 @@
 /* ───────────────────────── FINAL CUT ─────────────────────────
    Three colours only. --bg / --fg swap between charcoal and bone scenes
    (animated by <SceneShift/>); red is reserved for marks and actions. */
-:root {
-  --charcoal: #1c1c1c;
-  --bone: #f2ede3;
-  --red: #b3261e;
+/* Registered so they can transition: changing the theme or the scene cross-fades the whole site. */
+@property --c-ink { syntax: "<color>"; inherits: true; initial-value: #1c1c1c; }
+@property --c-surface { syntax: "<color>"; inherits: true; initial-value: #262626; }
+@property --c-paper { syntax: "<color>"; inherits: true; initial-value: #f2ede3; }
+@property --c-muted { syntax: "<color>"; inherits: true; initial-value: #a39e95; }
+@property --c-accent { syntax: "<color>"; inherits: true; initial-value: #b3261e; }
+@property --bg { syntax: "<color>"; inherits: true; initial-value: #1c1c1c; }
+@property --fg { syntax: "<color>"; inherits: true; initial-value: #f2ede3; }
 
-  --bg: var(--charcoal);
-  --fg: var(--bone);
+:root {
+  /* ── Base palette (edited live by the Theme Customizer; default = signature identity) ── */
+  --c-ink: #1c1c1c;
+  --c-surface: #262626;
+  --c-paper: #f2ede3;
+  --c-muted: #a39e95;
+  --c-accent: #b3261e;
+
+  /* ── Semantic roles ── */
+  --bg-primary: var(--c-ink);
+  --bg-secondary: color-mix(in oklab, var(--c-ink) 94%, var(--c-paper));
+  --surface: var(--c-surface);
+  --text-primary: var(--c-paper);
+  --text-secondary: var(--c-muted);
+  --accent: var(--c-accent);
+  --accent-hover: color-mix(in oklab, var(--c-accent) 78%, var(--c-paper));
+  --border: color-mix(in oklab, var(--fg) 18%, transparent);
+  --interactive: var(--c-accent);
+
+  /* Legacy aliases used across components (all resolve to the palette). */
+  --charcoal: var(--c-ink);
+  --bone: var(--c-paper);
+  --red: var(--c-accent);
+
+  /* Current scene (dark by default; <SceneShift/> toggles html[data-scene]). */
+  --bg: var(--c-ink);
+  --fg: var(--c-paper);
 
   --gutter: clamp(16px, 4vw, 64px);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+
+  transition:
+    --c-ink 0.6s ease,
+    --c-surface 0.6s ease,
+    --c-paper 0.6s ease,
+    --c-muted 0.6s ease,
+    --c-accent 0.6s ease,
+    --bg 1s var(--ease-in-out),
+    --fg 1s var(--ease-in-out);
+}
+:root[data-scene="light"] {
+  --bg: var(--c-paper);
+  --fg: var(--c-ink);
 }
 
 @theme inline {
@@ -22,6 +64,10 @@
   --color-red: var(--red);
   --color-bg: var(--bg);
   --color-fg: var(--fg);
+  --color-surface: var(--surface);
+  --color-muted: var(--text-secondary);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --font-sans: var(--font-sans-face);
   --font-serif: var(--font-serif-face);
   --font-mono: var(--font-mono-face);
@@ -108,7 +154,7 @@
     line-height: 0.84;
   }
   .hair {
-    border-color: color-mix(in srgb, var(--fg) 18%, transparent);
+    border-color: var(--border);
   }
   /* Corner ticks around a frame (camera viewfinder). */
   .viewfinder {
@@ -210,7 +256,7 @@
   .btn--red:hover,
   .btn--red:focus-visible {
     color: var(--charcoal);
-    border-color: var(--bone);
+    border-color: var(--accent-hover);
   }
 
   .line-mask {

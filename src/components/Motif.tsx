@@ -1,9 +1,11 @@
 import type { Project } from "@/content/types";
 
-const BONE = "#f2ede3";
-const DIM = "rgba(242,237,227,0.3)";
-const SOFT = "rgba(242,237,227,0.1)";
-const RED = "#b3261e";
+const BONE = "var(--c-paper)";
+const DIM = "color-mix(in oklab, var(--c-paper) 30%, transparent)";
+const SOFT = "color-mix(in oklab, var(--c-paper) 10%, transparent)";
+const RED = "var(--c-accent)";
+const INK = "var(--c-ink)";
+const redA = (pct: number) => `color-mix(in oklab, var(--c-accent) ${pct}%, transparent)`;
 
 /**
  * Abstract animated drawings for projects with no public screenshots, drawn in
@@ -12,7 +14,7 @@ const RED = "#b3261e";
 export default function Motif({ type, className }: { type: Project["motif"]; className?: string }) {
   return (
     <svg viewBox="0 0 800 500" className={className} role="img" aria-label="Illustration">
-      <rect width="800" height="500" fill="#1c1c1c" />
+      <rect width="800" height="500" fill={INK} />
       {type === "timeline" && (
         <g>
           {[
@@ -53,7 +55,7 @@ export default function Motif({ type, className }: { type: Project["motif"]; cla
           <path d="M40 160 H250 l20 -60 l25 120 l20 -90 l18 30 H520 l18 -40 l22 80 l16 -40 H760" fill="none" stroke={RED} strokeWidth="2.5" className="m-trace" />
           {Array.from({ length: 21 }, (_, d) => {
             const booked = [2, 5, 6, 9, 13, 16, 17].includes(d);
-            return <rect key={d} x={40 + (d % 7) * 104} y={270 + Math.floor(d / 7) * 64} width="92" height="52" fill={booked ? "rgba(179,38,30,0.6)" : SOFT} stroke={booked ? RED : "none"} />;
+            return <rect key={d} x={40 + (d % 7) * 104} y={270 + Math.floor(d / 7) * 64} width="92" height="52" fill={booked ? redA(60) : SOFT} stroke={booked ? RED : "none"} />;
           })}
         </g>
       )}
@@ -72,8 +74,8 @@ export default function Motif({ type, className }: { type: Project["motif"]; cla
           {Array.from({ length: 14 }, (_, i) => (
             <rect key={i} x="250" y={90 + i * 24} width={i % 4 === 3 ? 180 : 300} height="7" fill={DIM} />
           ))}
-          <rect x="244" y="0" width="312" height="22" fill="rgba(179,38,30,0.45)" className="m-scan" />
-          <rect x="560" y="330" width="130" height="96" fill="#1c1c1c" stroke={RED} />
+          <rect x="244" y="0" width="312" height="22" fill={redA(45)} className="m-scan" />
+          <rect x="560" y="330" width="130" height="96" fill={INK} stroke={RED} />
           <path d="M600 330 v-24 a25 25 0 0 1 50 0 v24" fill="none" stroke={RED} strokeWidth="3" />
           <text x="593" y="386" fill={BONE} fontFamily="monospace" fontSize="16" letterSpacing="2">RBAC</text>
         </g>
@@ -88,7 +90,7 @@ export default function Motif({ type, className }: { type: Project["motif"]; cla
       {type === "layers" && (
         <g>
           {[0, 1, 2, 3].map((i) => (
-            <rect key={i} x={180 + i * 60} y={80 + i * 50} width="320" height="200" fill={i === 3 ? "rgba(179,38,30,0.35)" : SOFT} stroke={i === 3 ? RED : DIM} className="m-float" style={{ animationDelay: `${i * -0.8}s` }} />
+            <rect key={i} x={180 + i * 60} y={80 + i * 50} width="320" height="200" fill={i === 3 ? redA(35) : SOFT} stroke={i === 3 ? RED : DIM} className="m-float" style={{ animationDelay: `${i * -0.8}s` }} />
           ))}
           <text x="40" y="465" fill={BONE} fontFamily="monospace" fontSize="15" letterSpacing="2">LAYERS → TOKENS → &lt;Component /&gt;</text>
         </g>

@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 
 /**
  * A fine ring with spring physics (Motion). Over [data-cursor="label"] it
- * becomes a red disc with the label. Fine pointers only.
+ * becomes an accent disc with the label. Colours come from theme variables,
+ * so the cursor follows the active palette. Fine pointers only.
  */
 export default function Cursor() {
   const x = useMotionValue(-100);
@@ -41,14 +42,10 @@ export default function Cursor() {
   return (
     <motion.div className="cursor" style={{ x: sx, y: sy }} aria-hidden>
       <motion.div
-        className="mono -translate-x-1/2 -translate-y-1/2 rounded-full"
-        animate={
-          label
-            ? { width: 96, height: 96, backgroundColor: "#b3261e", borderColor: "#b3261e" }
-            : { width: 28, height: 28, backgroundColor: "rgba(179,38,30,0)", borderColor: "#b3261e" }
-        }
+        className="mono grid -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-accent text-[10px] text-bone transition-colors duration-300"
+        animate={label ? { width: 96, height: 96 } : { width: 28, height: 28 }}
         transition={{ type: "spring", stiffness: 300, damping: 26 }}
-        style={{ borderWidth: 1, borderStyle: "solid", display: "grid", placeItems: "center", color: "#f2ede3", fontSize: 10 }}
+        style={{ backgroundColor: label ? "var(--accent)" : "transparent" }}
       >
         {label}
       </motion.div>

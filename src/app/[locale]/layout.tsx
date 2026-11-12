@@ -8,6 +8,8 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Nav from "@/components/Nav";
 import Cursor from "@/components/Cursor";
 import Loader from "@/components/Loader";
+import ThemeProvider, { themeBootScript } from "@/components/ThemeProvider";
+import ThemeCustomizer from "@/components/ThemeCustomizer";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -61,9 +63,13 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   };
 
   return (
-    <html lang={locale} className={fontVars}>
+    <html lang={locale} className={fontVars} data-scene="dark" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body>
         <ContentProvider value={content}>
+          <ThemeProvider>
           <a href="#main" className="skip-link mono">
             {content.ui.skip}
           </a>
@@ -72,8 +78,10 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           <SmoothScroll />
           <Nav />
           {children}
+          <ThemeCustomizer />
           <Cursor />
           <div className="grain" aria-hidden />
+          </ThemeProvider>
         </ContentProvider>
       </body>
     </html>

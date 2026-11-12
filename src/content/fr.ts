@@ -250,7 +250,7 @@ export const fr: Content = {
       release: "cliquez à nouveau pour libérer",
     },
     proof: { label: "05 — Résultats", title: ["Mesuré,", "pas ", "promis.", ""] },
-    contact: { label: "06 — Contact", title: ["Un projet", "à ", "construire ?", ""], send: "Envoyer un email", copy: "Copier l'adresse", copied: "Copié ✓", built: "Conçu et développé à Sfax · Next.js · GSAP · Three.js · Lenis", top: "Haut de page ↑" },
+    contact: { label: "06 — Contact", title: ["Un projet", "à ", "construire ?", ""], send: "Envoyer un email", copy: "Copier l'adresse", copied: "Copié ✓", built: "Conçu et développé à Sfax · Next.js · GSAP · Motion · Lenis", top: "Haut de page ↑" },
     visual: { screenshot: "Capture d'écran", illustration: "Illustration · pas de capture publique", fig: "Fig." },
     caseStudy: {
       work: "Projets",

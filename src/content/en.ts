@@ -286,7 +286,7 @@ export const en: Content = {
       release: "click again to release",
     },
     proof: { label: "05 — Proof", title: ["Measured,", "not ", "promised.", ""] },
-    contact: { label: "06 — Contact", title: ["Have something", "to ", "build?", ""], send: "Send an email", copy: "Copy address", copied: "Copied ✓", built: "Designed & built in Sfax · Next.js · GSAP · Three.js · Lenis", top: "Back to top ↑" },
+    contact: { label: "06 — Contact", title: ["Have something", "to ", "build?", ""], send: "Send an email", copy: "Copy address", copied: "Copied ✓", built: "Designed & built in Sfax · Next.js · GSAP · Motion · Lenis", top: "Back to top ↑" },
     visual: { screenshot: "Screenshot", illustration: "Illustration · no public screenshot", fig: "Fig." },
     caseStudy: {
       work: "Work",

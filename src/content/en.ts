@@ -68,8 +68,8 @@ export const en: Content = {
       ],
       stack: ["Next.js 16", "TypeScript", "Cloudflare Workers", "D1", "R2", "Drizzle ORM", "Zod", "Tailwind CSS", "Vitest"],
       results: ["360+ automated tests, some running inside the Workers runtime", "CI with automatic preview deployments", "$0 hosting within free-tier limits"],
-      live: { label: "linesup-architecture.com", href: "https://www.linesup-architecture.com" },
-      image: { src: "/work/linesup-desktop.png", mobile: "/work/linesup-mobile.png", alt: "Lines Up website home page: large headline 'L'architecture, ligne après ligne.' on black with orange accents", note: "Live site, captured Nov 2026. Content and images are still the studio's placeholders." },
+      live: { label: "linesup-architecture.com", href: "https://www.linesup-architecture.com/" },
+      image: { src: "/work/lines-up-desktop.webp", mobile: "/work/lines-up-mobile.webp", alt: "Lines Up website home page: large headline 'L'architecture, ligne après ligne.' on black with orange accents", note: "Live site, captured Nov 2026. The studio\'s content is still being added." },
       motif: "grid", featured: true,
     },
     {
@@ -86,8 +86,8 @@ export const en: Content = {
       ],
       stack: ["Next.js", "TypeScript", "TanStack Query", "WebSockets", "Durable Objects", "Solidity", "wagmi", "viem", "Jest"],
       results: ["45% fewer server API requests", "50+ reusable components", "2nd Prize, Base hackathon on Devfolio (2025)"],
-      live: { label: "qrbase.xyz", href: "https://www.qrbase.xyz" },
-      image: { src: "/work/qrbase-desktop.png", mobile: "/work/qrbase-mobile.png", alt: "QRBase puzzle screen with a timer, a prize counter, level indicator and a 'Connect to Play' panel", note: "Live site, captured Nov 2026 (signed-out view)." },
+      live: { label: "qrbase.xyz/puzzle", href: "https://www.qrbase.xyz/puzzle" },
+      image: { src: "/work/qrbase-desktop.webp", mobile: "/work/qrbase-mobile.webp", alt: "QRBase puzzle screen with a timer, a prize counter, level indicator and a 'Connect to Play' panel", note: "Live puzzle page, captured Nov 2026 (signed-out view)." },
       motif: "bars", featured: true,
     },
     {
@@ -102,7 +102,7 @@ export const en: Content = {
       ],
       stack: ["React", "Vue 3", "TypeScript", "Web Workers"],
       results: ["60 FPS rendering while processing media"],
-      motif: "timeline", featured: true,
+      motif: "timeline", featured: false,
     },
     {
       slug: "dinertia", index: "04", name: "Dinertia", kind: "e-Health tele-rehabilitation SaaS", company: "Tekab.dev", period: "2023 — 2024",
@@ -116,6 +116,8 @@ export const en: Content = {
       ],
       stack: ["Vue 3", "Pinia", "React", "TypeScript", "Service Workers", "IndexedDB", "Vitest", "Jest"],
       results: ["Offline-first PWA", "CRM, scheduling and self-service booking"],
+      live: { label: "dinertia.fr", href: "https://dinertia.fr/" },
+      image: { src: "/work/dinertia-desktop.webp", mobile: "/work/dinertia-mobile.webp", alt: "Dinertia sign-in page with the illustration of a remote physiotherapy session", note: "Live app, captured Nov 2026 (sign-in page; the app requires an account)." },
       motif: "pulse", featured: true,
     },
     {
@@ -132,6 +134,8 @@ export const en: Content = {
       ],
       stack: ["React", "Next.js", "TypeScript", "Stripe", "Chart.js", "TanStack Query", "Cloudflare Workers"],
       results: ["30% faster dashboard rendering", "20+ responsive views"],
+      live: { label: "app.bitgrass.com", href: "https://app.bitgrass.com/" },
+      image: { src: "/work/bitgrass-desktop.webp", mobile: "/work/bitgrass-mobile.webp", alt: "Bitgrass dashboard: carbon metrics, NFT collection details and a tokenized land card", note: "Live app, captured Nov 2026." },
       motif: "bars", featured: true,
     },
     {
@@ -157,7 +161,9 @@ export const en: Content = {
       ],
       stack: ["Nest.js", "PostgreSQL", "TypeScript", "RBAC", "PDF annotations"],
       results: ["Security audit findings fixed and retested"],
-      motif: "document", featured: false,
+      live: { label: "app.legalst.fr", href: "https://app.legalst.fr/" },
+      image: { src: "/work/legal-tech-desktop.webp", mobile: "/work/legal-tech-mobile.webp", alt: "Legal Support Tech sign-in page with the platform welcome message", note: "Live app, captured Nov 2026 (sign-in page; the app requires an account)." },
+      motif: "document", featured: true,
     },
     {
       slug: "survey-engine", index: "08", name: "Survey Engine", kind: "Enterprise survey platform, web & mobile", company: "Tekab.dev", period: "2022",
@@ -171,7 +177,8 @@ export const en: Content = {
       ],
       stack: ["Nest.js", "Supabase", "PostgreSQL", "React", "React Native", "Redux Toolkit"],
       results: ["Published on Google Play and the App Store"],
-      motif: "grid", featured: false,
+      live: { label: "app.selvitys.fr", href: "https://app.selvitys.fr/" },
+      motif: "grid", featured: true,
     },
     {
       slug: "drawyourcode", index: "09", name: "DrawYourCode", kind: "Design-to-code platform", company: "SASTEC Group", period: "2021",
@@ -268,11 +275,11 @@ export const en: Content = {
     work: {
       label: "03 — Selected work",
       title: ["Built,", "shipped,", "measured."],
-      intro: "Five products from five very different problems: a studio CMS, a Web3 game, a video editor, an e-health SaaS and a climate marketplace.",
+      intro: "Six products, six very different problems: a studio CMS, a Web3 game, a climate marketplace, an e-health SaaS, a legal document platform and an enterprise survey engine.",
       caseStudy: "Case study",
       live: "Live",
       scroll: "Scroll →",
-      more: "And four more",
+      more: "And three more",
       fullIndex: "Full index ↓",
       indexTitle: "Index of work",
       indexCount: "09 projects · 2021 — 2026",

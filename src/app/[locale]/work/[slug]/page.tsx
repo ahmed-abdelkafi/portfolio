@@ -7,7 +7,7 @@ import { en } from "@/content/en";
 import { sceneNo } from "@/lib/theme";
 import Reveals from "@/components/Reveals";
 import SceneShift from "@/components/SceneShift";
-import Visual from "@/components/Visual";
+import Showcase from "@/components/Showcase";
 import ArchDiagram from "@/components/ArchDiagram";
 import LayerBadges from "@/components/LayerBadges";
 import { architectures, LAYERS, layerName } from "@/content/architecture";
@@ -88,7 +88,7 @@ export default async function CaseStudy({ params }: PageProps<"/[locale]/work/[s
             </dl>
           </div>
           <div className="shell mt-16" data-open>
-            <Visual project={project} labels={c.ui.visual} priority sizes="100vw" />
+            <Showcase project={project} labels={c.ui.visual} priority sizes="(min-width: 1024px) 80vw, 100vw" />
           </div>
         </header>
 

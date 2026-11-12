@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { workHref } from "@/content";
 import { useContent } from "./ContentProvider";
-import Visual from "./Visual";
+import Showcase from "./Showcase";
 
 /**
  * Index of all nine projects on a bone scene. The open row morphs (Motion
@@ -56,7 +56,7 @@ export default function WorkIndex() {
                       >
                         <div className="grid gap-8 pb-10 md:grid-cols-12 md:pl-[5rem]">
                           <div className="md:col-span-5">
-                            <Visual project={p} labels={ui.visual} caption={false} sizes="(min-width: 768px) 35vw, 90vw" />
+                            <Showcase project={p} labels={ui.visual} caption={false} phone={false} sizes="(min-width: 768px) 35vw, 90vw" />
                           </div>
                           <div className="md:col-span-6 md:col-start-7">
                             <p className="text-xl leading-relaxed">{p.summary}</p>

@@ -38,7 +38,7 @@ export default function Visual({
                 fill
                 priority={priority}
                 sizes={sizes}
-                className="object-cover object-top grayscale transition-[filter,transform] duration-700 group-hover/visual:scale-[1.03] group-hover/visual:grayscale-0 group-focus-within/visual:grayscale-0"
+                className="object-cover object-top transition-transform duration-700 group-hover/visual:scale-[1.03]"
               />
             ) : (
               <Motif type={project.motif} className="h-full w-full" />

@@ -8,7 +8,7 @@ import { sceneNo } from "@/lib/theme";
 import { useContent } from "./ContentProvider";
 import Magnetic from "./Magnetic";
 import LayerBadges from "./LayerBadges";
-import Visual from "./Visual";
+import Showcase from "./Showcase";
 
 /**
  * SC.04 — Selected work. Desktop: the scene pins and five projects travel
@@ -104,7 +104,7 @@ export default function Work() {
             </span>
             <div className="shell relative grid gap-8 lg:grid-cols-12 lg:items-end lg:px-0">
               <Link href={workHref(locale, p.slug)} className="block lg:col-span-8" data-cursor={t.caseStudy} aria-label={`${p.name}, ${t.caseStudy}`} tabIndex={-1}>
-                <Visual project={p} labels={ui.visual} priority={i === 0} caption={false} sizes="(min-width: 1024px) 50vw, 100vw" />
+                <Showcase project={p} labels={ui.visual} priority={i === 0} caption={false} sizes="(min-width: 1024px) 50vw, 100vw" />
               </Link>
               <div className="lg:col-span-4">
                 <p className="mono flex items-center gap-4">

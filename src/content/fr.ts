@@ -31,7 +31,7 @@ const projects: Project[] = [
     image: {
       ...base("lines-up").image!,
       alt: "Page d'accueil du site Lines Up : grand titre « L'architecture, ligne après ligne. » sur fond noir avec des accents orange",
-      note: "Site en ligne, capture de nov. 2026. Les textes et images sont encore des contenus provisoires du studio.",
+      note: "Site en ligne, capture de nov. 2026. Le studio ajoute encore ses contenus.",
     },
   },
   {
@@ -54,7 +54,7 @@ const projects: Project[] = [
     image: {
       ...base("qrbase").image!,
       alt: "Écran de puzzle QRBase avec un minuteur, un compteur de prix, un niveau et un panneau « Connect to Play »",
-      note: "Site en ligne, capture de nov. 2026 (vue non connectée).",
+      note: "Page puzzle en ligne, capture de nov. 2026 (vue non connectée).",
     },
   },
   {
@@ -73,6 +73,7 @@ const projects: Project[] = [
   },
   {
     ...base("dinertia"),
+    image: { ...base("dinertia").image!, alt: "Page de connexion de Dinertia avec l'illustration d'une séance de rééducation à distance", note: "App en ligne, capture de nov. 2026 (page de connexion ; l'app nécessite un compte)." },
     kind: "SaaS e-santé de télé-rééducation",
     role: "Développeur Frontend",
     summary: "Un SaaS de télé-rééducation : gestion des patients, planning et prise de rendez-vous en ligne, avec des fonctionnalités offline-first.",
@@ -87,6 +88,7 @@ const projects: Project[] = [
   },
   {
     ...base("bitgrass"),
+    image: { ...base("bitgrass").image!, alt: "Dashboard Bitgrass : indicateurs carbone, collection NFT et carte de terrain tokenisé", note: "App en ligne, capture de nov. 2026." },
     kind: "Marketplace climate-tech",
     role: "Développeur Frontend senior (lead)",
     summary: "Une marketplace climate-tech et un dashboard analytique pour des données climatiques multidimensionnelles, avec abonnements et facturation.",
@@ -113,6 +115,7 @@ const projects: Project[] = [
   },
   {
     ...base("legal-tech"),
+    image: { ...base("legal-tech").image!, alt: "Page de connexion de Legal Support Tech avec le message d'accueil de la plateforme", note: "App en ligne, capture de nov. 2026 (page de connexion ; l'app nécessite un compte)." },
     name: "Revue Legal-Tech",
     kind: "Plateforme de revue de documents",
     role: "Développeur Full-Stack",
@@ -232,11 +235,11 @@ export const fr: Content = {
     work: {
       label: "03 — Projets choisis",
       title: ["Conçus,", "livrés,", "mesurés."],
-      intro: "Cinq produits nés de cinq problèmes très différents : un CMS de studio, un jeu Web3, un éditeur vidéo, un SaaS e-santé et une marketplace climat.",
+      intro: "Six produits, six problèmes très différents : un CMS de studio, un jeu Web3, une marketplace climat, un SaaS e-santé, une plateforme juridique et un moteur d'enquêtes d'entreprise.",
       caseStudy: "Étude de cas",
       live: "En ligne",
       scroll: "Défiler →",
-      more: "Et quatre autres",
+      more: "Et trois autres",
       fullIndex: "Index complet ↓",
       indexTitle: "Index des projets",
       indexCount: "09 projets · 2021 — 2026",

@@ -1,0 +1,273 @@
+/**
+ * Contenu français : mêmes faits vérifiés que la version anglaise (en.ts),
+ * rédigés en français. Les données techniques (slugs, stack, liens, images)
+ * sont reprises telles quelles.
+ */
+import { en } from "./en";
+import type { Content, Project } from "./types";
+
+const base = (slug: string) => en.projects.find((p) => p.slug === slug) as Project;
+
+const projects: Project[] = [
+  {
+    ...base("lines-up"),
+    kind: "Site web + CMS sur mesure",
+    company: "Dexaura · pour un studio d'architecture",
+    period: "2026 — auj.",
+    role: "Seul développeur, du besoin à la mise en production",
+    summary:
+      "Un site multilingue (français / anglais / arabe, RTL) et un CMS sur mesure pour un studio d'architecture et de décoration, en serverless sur Cloudflare Workers, pour 0 $ d'hébergement.",
+    challenge:
+      "Un seul développeur, un vrai client, trois langues dont l'arabe de droite à gauche, et des éditeurs qui ne doivent jamais pouvoir publier un brouillon par erreur, le tout dans les limites de l'offre gratuite.",
+    contributions: [
+      "Pilotage du projet en direct avec le client : recueil et analyse des besoins, découpage en étapes, estimation, planification, priorisation et documentation.",
+      "Next.js 16 (App Router) sur Cloudflare Workers via OpenNext, avec Cloudflare D1 + Drizzle ORM et stockage média R2, en TypeScript strict avec Zod.",
+      "Rôles vérifiés côté serveur (propriétaire / admin / éditeur) sur chaque action, authentification à deux facteurs, journal d'audit et circuit de validation : aucun brouillon n'arrive sur le site public.",
+      "Publication programmée via Cron, conçue pour être idempotente : un projet ne peut jamais être publié deux fois.",
+      "Import du portfolio Behance avec vérification des droits sur les images, et conversion WebP dans le navigateur qui supprime les données EXIF/GPS.",
+      "SEO (hreflang, sitemap, données structurées) et accessibilité (navigation clavier, mouvement réduit, contraste).",
+    ],
+    results: ["Plus de 360 tests automatisés, dont certains dans le runtime Workers", "CI avec déploiements de preview automatiques", "0 $ d'hébergement dans l'offre gratuite"],
+    image: {
+      ...base("lines-up").image!,
+      alt: "Page d'accueil du site Lines Up : grand titre « L'architecture, ligne après ligne. » sur fond noir avec des accents orange",
+      note: "Site en ligne, capture de nov. 2026. Les textes et images sont encore des contenus provisoires du studio.",
+    },
+  },
+  {
+    ...base("qrbase"),
+    kind: "Plateforme Web3 gamifiée",
+    period: "2025 — 2026",
+    role: "Développeur Frontend / Full-Stack senior",
+    summary:
+      "Une plateforme numérique gamifiée sur Base : puzzles QR, prix, classements et statistiques communautaires en direct. 2e prix au hackathon Base sur Devfolio (2025).",
+    challenge:
+      "Garder une interface de jeu instantanée et cohérente alors que l'état serveur, les statistiques en direct et les paiements onchain changent en permanence.",
+    contributions: [
+      "Architecture du frontend Next.js (App Router) et TypeScript avec plus de 50 composants réutilisables pour une UI cohérente.",
+      "Gestion centralisée de l'état serveur et du cache avec TanStack Query : 45 % de requêtes API serveur en moins et mises à jour optimistes.",
+      "Dashboards analytiques temps réel sur Cloudflare Durable Objects et WebSockets, Cron Triggers pour les notifications et R2 pour les images.",
+      "Smart contracts Solidity et parcours de paiement onchain (achat de tentatives de jeu et de packs de publication) avec Privy, Coinbase CDP / OnchainKit, wagmi, viem et ethers.js.",
+      "Workflow assisté par IA (Claude Code, Cursor, GitHub Copilot), avec revue de chaque changement généré et tests Jest automatisés.",
+    ],
+    results: ["45 % de requêtes API serveur en moins", "Plus de 50 composants réutilisables", "2e prix, hackathon Base sur Devfolio (2025)"],
+    image: {
+      ...base("qrbase").image!,
+      alt: "Écran de puzzle QRBase avec un minuteur, un compteur de prix, un niveau et un panneau « Connect to Play »",
+      note: "Site en ligne, capture de nov. 2026 (vue non connectée).",
+    },
+  },
+  {
+    ...base("videokit"),
+    kind: "Éditeur vidéo dans le navigateur",
+    role: "Développeur Frontend",
+    summary: "Un éditeur vidéo qui fonctionne dans le navigateur, construit autour d'une timeline multipiste en glisser-déposer.",
+    challenge:
+      "Le traitement média est lourd, et une timeline doit rester parfaitement fluide pendant que l'utilisateur déplace des clips et garde l'audio et la vidéo alignés.",
+    contributions: [
+      "Timeline multipiste en glisser-déposer en React et Vue 3, avec alignement audio/vidéo.",
+      "Traitements média déportés dans des Web Workers pour libérer le thread principal et garder un rendu à 60 FPS.",
+      "Conception d'un parcours utilisateur complexe en plusieurs étapes, piloté par l'état.",
+    ],
+    results: ["Rendu à 60 FPS pendant le traitement média"],
+  },
+  {
+    ...base("dinertia"),
+    kind: "SaaS e-santé de télé-rééducation",
+    role: "Développeur Frontend",
+    summary: "Un SaaS de télé-rééducation : gestion des patients, planning et prise de rendez-vous en ligne, avec des fonctionnalités offline-first.",
+    challenge:
+      "Les parcours de soin sont longs et doivent résister aux mauvaises connexions : les patients réservent et suivent leurs soins où qu'ils soient.",
+    contributions: [
+      "Modules CRM (gestion des patients), planning et réservation de rendez-vous en ligne : les patients prennent, consultent et gèrent eux-mêmes leurs rendez-vous.",
+      "Dashboards patients et parcours multi-étapes en Vue 3 (Composition API, Pinia, Vue Router, Vite), React et TypeScript, avec exports PDF/CSV.",
+      "Fonctionnalités PWA offline-first avec Service Workers et IndexedDB, couvertes par des tests unitaires Jest et Vitest.",
+    ],
+    results: ["PWA offline-first", "CRM, planning et réservation en libre-service"],
+  },
+  {
+    ...base("bitgrass"),
+    kind: "Marketplace climate-tech",
+    role: "Développeur Frontend senior (lead)",
+    summary: "Une marketplace climate-tech et un dashboard analytique pour des données climatiques multidimensionnelles, avec abonnements et facturation.",
+    challenge: "Des données denses et multidimensionnelles devaient rester lisibles et rapides, et les paiements justes au centime près.",
+    contributions: [
+      "Direction du développement frontend en React, Next.js et TypeScript sur plus de 20 vues responsives.",
+      "Intégration des abonnements Stripe, de la facturation récurrente et de webhooks sécurisés pour les paiements.",
+      "Dashboards Chart.js avec filtres dynamiques et export CSV/PDF.",
+      "Optimisation TanStack Query : rendu des dashboards 30 % plus rapide.",
+      "Cloudflare Workers avec Durable Objects pour le temps réel, Cron Triggers pour les notifications et R2 pour les images.",
+    ],
+    results: ["Rendu des dashboards 30 % plus rapide", "Plus de 20 vues responsives"],
+  },
+  {
+    ...base("live-streaming"),
+    name: "Streaming live",
+    kind: "Plateforme vidéo live d'entreprise",
+    role: "Développeur Frontend",
+    summary: "L'interface du lecteur et le dashboard de modération d'une plateforme de streaming vidéo live d'entreprise.",
+    challenge: "Des milliers de personnes qui regardent et discutent en même temps, et des modérateurs qui doivent tout voir en direct.",
+    contributions: ["Interface du lecteur live et dashboard de modération en WebSockets.", "Chat à faible latence pour plus de 10 000 utilisateurs simultanés."],
+    stack: ["WebSockets", "UI temps réel"],
+    results: ["Plus de 10 000 utilisateurs simultanés"],
+  },
+  {
+    ...base("legal-tech"),
+    name: "Revue Legal-Tech",
+    kind: "Plateforme de revue de documents",
+    role: "Développeur Full-Stack",
+    summary: "Une plateforme sécurisée de revue de documents juridiques, avec annotations et permissions fines.",
+    challenge:
+      "Des données juridiques sensibles : chaque accès doit être justifié, tracé et protégé, et le système doit passer un audit de sécurité externe.",
+    contributions: [
+      "API REST Nest.js, authentification et couche de données PostgreSQL, avec contrôle d'accès par rôles et protection CSRF/XSS.",
+      "Conception du schéma PostgreSQL et des règles d'accès, avec migrations versionnées, index, transactions et optimisation des plans de requête (EXPLAIN).",
+      "Suivi des erreurs, logs et alertes, gestion des incidents de production, et préparation d'un environnement de staging pour un audit de sécurité, puis correction des failles confirmées et accompagnement du re-test.",
+      "Dashboard de revue de documents avec tableaux de données dynamiques et annotations PDF.",
+    ],
+    stack: ["Nest.js", "PostgreSQL", "TypeScript", "RBAC", "Annotations PDF"],
+    results: ["Failles d'audit de sécurité corrigées et re-testées"],
+  },
+  {
+    ...base("survey-engine"),
+    name: "Moteur d'enquêtes",
+    kind: "Plateforme d'enquêtes d'entreprise, web et mobile",
+    role: "Développeur Full-Stack",
+    summary: "Un moteur d'enquêtes d'entreprise avec un dashboard web et une application mobile publiée sur les deux stores.",
+    challenge: "Un même modèle de données pour un dashboard web et une app mobile, où chaque utilisateur ne doit voir que ses propres données.",
+    contributions: [
+      "Backend Nest.js sur Supabase (PostgreSQL, Supabase Auth, Supabase Realtime) et dashboard web React.",
+      "Politiques de sécurité au niveau des lignes (RLS) Supabase : chaque utilisateur et chaque rôle ne lit et ne modifie que les données auxquelles il a droit.",
+      "Application React Native publiée sur Google Play et l'App Store, avec notifications push et accès caméra.",
+    ],
+    results: ["Publiée sur Google Play et l'App Store"],
+  },
+  {
+    ...base("drawyourcode"),
+    kind: "Plateforme design-to-code",
+    role: "Projet de fin d'études, conception et développement",
+    summary: "Une plateforme qui transforme les design tokens et l'arborescence des calques Figma en composants React modulaires.",
+    challenge: "Traduire les calques d'un designer en composants qu'un développeur garderait vraiment.",
+    contributions: ["Conception et développement de la plateforme sur l'API REST Figma et Node.js.", "Génération de composants React modulaires à partir des design tokens et des calques."],
+    results: ["Passage du design au code 40 % plus court"],
+  },
+];
+
+export const fr: Content = {
+  ...en,
+  locale: "fr",
+  person: {
+    ...en.person,
+    role: "Développeur Full-Stack senior / Développeur Frontend senior",
+    location: "Sfax, Tunisie",
+    availability: "Ouvert aux postes en télétravail et aux missions freelance longue durée",
+    intro:
+      "Je crée des produits web rapides et fiables avec React, Next.js, Vue 3 et TypeScript, et les backends qui les font tourner : Nest.js, PostgreSQL, Supabase et Cloudflare Workers.",
+    photo: { ...en.person.photo, alt: "Portrait d'Ahmed Abdelkafi", caption: "Fig. 00 · Ahmed, Sfax" },
+    languages: [
+      { name: "Arabe", level: "Langue maternelle" },
+      { name: "Français", level: "Professionnel" },
+      { name: "Anglais", level: "Professionnel" },
+    ],
+  },
+  manifesto: [
+    "Je traite une interface comme un architecte traite un plan :",
+    "chaque ligne a une raison,",
+    "chaque mesure est vérifiée,",
+    "et rien ne part en production tant que ça ne tient pas à l'usage réel.",
+  ],
+  principles: [
+    { n: "01", title: "Tout le cycle de vie", text: "Du recueil des besoins et de la conception technique au développement, aux tests, au déploiement et au support en production. Je porte les fonctionnalités de bout en bout." },
+    { n: "02", title: "Mesuré, pas supposé", text: "La performance est un chiffre : 45 % de requêtes en moins, rendu 30 % plus rapide, timelines à 60 FPS. Je mesure d'abord, j'optimise ensuite." },
+    { n: "03", title: "Sécurisé par défaut", text: "Rôles vérifiés côté serveur, double authentification, journaux d'audit, sécurité au niveau des lignes et entrées validées, sur chaque action, pas seulement dans l'UI." },
+    { n: "04", title: "L'IA, avec relecture", text: "J'utilise Claude Code, Cursor et Copilot chaque jour, et chaque changement généré est relu, testé et assumé avant d'arriver en production." },
+  ],
+  roles: [
+    { ...en.roles[0], period: "Juil. 2026 — Aujourd'hui", title: "Développeur Full-Stack senior", place: "Télétravail", summary: "Conception et développement, seul et de bout en bout, d'un site multilingue et d'un CMS sur mesure pour un studio d'architecture et de décoration, en serverless sur Cloudflare Workers." },
+    { ...en.roles[1], period: "Févr. 2025 — Juin 2026", title: "Développeur Frontend / Full-Stack senior", place: "Télétravail", summary: "Architecture du frontend de QRBase, plateforme gamifiée sur Base, de ses dashboards temps réel et de ses paiements onchain. 2e prix au hackathon Base sur Devfolio." },
+    { ...en.roles[2], period: "Oct. 2024 — Janv. 2025", title: "Développeur Frontend senior", place: "Télétravail", summary: "Direction du frontend de Bitgrass, marketplace climate-tech et dashboard analytique : plus de 20 vues responsives, facturation Stripe et dashboards de données." },
+    { ...en.roles[3], period: "Août 2021 — Oct. 2024", title: "Développeur Frontend", place: "Sfax, Tunisie", summary: "Développeur frontend qui a pris de plus en plus de travail full-stack (Nest.js, PostgreSQL, Supabase) sur cinq produits clients. Aussi revues de code, mentorat de développeurs juniors, Docker et GitLab CI/CD." },
+    { ...en.roles[4], period: "Févr. 2021 — Juin 2021", title: "Stagiaire de fin d'études", place: "Sfax, Tunisie", summary: "Conception et développement de DrawYourCode, une plateforme design-to-code qui transforme les design tokens et les calques Figma en composants React modulaires." },
+  ],
+  projects,
+  metrics: [
+    { value: "45%", label: "de requêtes API serveur en moins", context: "Cache TanStack Query · QRBase" },
+    { value: "30%", label: "de rendu plus rapide", context: "Optimisation des requêtes · Bitgrass" },
+    { value: "10,000+", label: "utilisateurs simultanés", context: "Chat WebSocket · Streaming live" },
+    { value: "360+", label: "tests automatisés", context: "Vitest, y compris runtime Workers · Lines Up" },
+    { value: "60", label: "FPS pendant le traitement média", context: "Web Workers · VideoKit" },
+    { value: "40%", label: "de passage design-code en moins", context: "Figma vers React · DrawYourCode" },
+  ],
+  honours: [
+    { year: "2025", title: "2e prix", detail: "Hackathon Base sur Devfolio, avec QRBase" },
+    { year: "2021", title: "Major de promotion", detail: "Licence en informatique, Faculté des Sciences de Sfax" },
+    { year: "2017", title: "Major de promotion", detail: "BTS en informatique industrielle, Sfax" },
+  ],
+  education: [
+    { period: "2018 — 2021", title: "Licence en informatique", school: "Faculté des Sciences de Sfax", note: "Major de promotion, génie logiciel et développement web" },
+    { period: "2015 — 2017", title: "Brevet de technicien supérieur en informatique industrielle", school: "Centre sectoriel de formation, Sfax", note: "Major de promotion" },
+  ],
+  courses: ["Développement React & Next.js · Coursera", "Interactivité HTML5 & CSS3 · Coursera"],
+  expertise: en.expertise.map((g) => ({
+    ...g,
+    group: ({ Interface: "Interface", "State & real-time": "État & temps réel", "Backend & data": "Backend & données", "Platform & quality": "Plateforme & qualité" } as Record<string, string>)[g.group] ?? g.group,
+  })),
+  ui: {
+    skip: "Aller au contenu",
+    nav: { about: "Profil", path: "Parcours", work: "Projets", stack: "Stack", contact: "Contact", menu: "Menu", close: "Fermer", switchTo: "English version" },
+    hero: {
+      portfolio: "Portfolio",
+      basedIn: "Basé à",
+      practice: "Métier",
+      practiceValue: "Frontend · Full-stack",
+      status: "Statut",
+      statusValue: "Disponible · à distance",
+      tagline: "Du premier besoin à la mise en production.",
+      seeWork: "Voir les projets",
+      getInTouch: "Me contacter",
+      yrs: "ans",
+    },
+    about: { label: "01 — Profil", title: "À propos d'Ahmed Abdelkafi", languages: "Langues", education: "Formation", courses: "Cours" },
+    path: { label: "02 — Parcours", title: ["Cinq ans,", "une ligne ", "continue", "."], nowReading: "En cours de lecture" },
+    work: {
+      label: "03 — Projets choisis",
+      title: ["Conçus,", "livrés,", "mesurés."],
+      intro: "Cinq produits nés de cinq problèmes très différents : un CMS de studio, un jeu Web3, un éditeur vidéo, un SaaS e-santé et une marketplace climat.",
+      caseStudy: "Étude de cas",
+      live: "En ligne",
+      scroll: "Défiler →",
+      more: "Et quatre autres",
+      fullIndex: "Index complet ↓",
+      indexTitle: "Index des projets",
+      indexCount: "09 projets · 2021 — 2026",
+      stack: "Stack",
+    },
+    stack: {
+      label: "04 — Stack",
+      title: ["Les outils avec", "lesquels j'ai ", "livré", "."],
+      hint: "Survolez ou touchez une technologie pour voir où elle a été utilisée",
+      usedIn: { one: "utilisé dans {n} projet", other: "utilisé dans {n} projets" },
+      release: "cliquez à nouveau pour libérer",
+    },
+    proof: { label: "05 — Résultats", title: ["Mesuré,", "pas ", "promis.", ""] },
+    contact: { label: "06 — Contact", title: ["Un projet", "à ", "construire ?", ""], send: "Envoyer un email", copy: "Copier l'adresse", copied: "Copié ✓", built: "Conçu et développé à Sfax · Next.js · GSAP · Three.js · Lenis", top: "Haut de page ↑" },
+    visual: { screenshot: "Capture d'écran", illustration: "Illustration · pas de capture publique", fig: "Fig." },
+    caseStudy: {
+      work: "Projets",
+      role: "Rôle",
+      context: "Contexte",
+      period: "Période",
+      live: "En ligne",
+      private: "Produit privé",
+      overview: "Vue d'ensemble",
+      challenge: "Le défi",
+      stack: "Stack",
+      whatIDid: "Ce que j'ai fait",
+      results: "Résultats",
+      mobile: "Sur mobile · même build, site en ligne",
+      next: "Projet suivant",
+      contact: "Contact",
+    },
+    notFound: { code: "Erreur 404 · Hors du plan", title: ["Aucune ligne", "ici."], back: "Retour au plan" },
+  },
+};

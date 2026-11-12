@@ -1,26 +1,385 @@
 @import "tailwindcss";
 
+/* ───────────────────────── FINAL CUT ─────────────────────────
+   Three colours only. --bg / --fg swap between charcoal and bone scenes
+   (animated by <SceneShift/>); red is reserved for marks and actions. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --charcoal: #1c1c1c;
+  --bone: #f2ede3;
+  --red: #b3261e;
+
+  --bg: var(--charcoal);
+  --fg: var(--bone);
+
+  --gutter: clamp(16px, 4vw, 64px);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-charcoal: var(--charcoal);
+  --color-bone: var(--bone);
+  --color-red: var(--red);
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --font-sans: var(--font-sans-face);
+  --font-serif: var(--font-serif-face);
+  --font-mono: var(--font-mono-face);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  html {
+    background: var(--charcoal);
+    -webkit-text-size-adjust: 100%;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans-face), "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--red);
+    color: var(--bone);
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  :focus-visible {
+    outline: 1px solid var(--red);
+    outline-offset: 4px;
+  }
+  img {
+    max-width: 100%;
+    display: block;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .skip-link {
+    position: fixed;
+    left: 16px;
+    top: -80px;
+    z-index: 300;
+    background: var(--red);
+    color: var(--bone);
+    padding: 10px 16px;
+  }
+  .skip-link:focus {
+    top: 16px;
+  }
+  .shell {
+    padding-inline: var(--gutter);
+  }
+  .mono {
+    font-family: var(--font-mono-face), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .serif-i {
+    font-family: var(--font-serif-face), Didot, Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  /* Oversized condensed Swiss titles. */
+  .cut {
+    font-weight: 800;
+    font-stretch: 62%;
+    font-variation-settings: "wdth" 62;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 0.84;
+  }
+  .hair {
+    border-color: color-mix(in srgb, var(--fg) 18%, transparent);
+  }
+  /* Corner ticks around a frame (camera viewfinder). */
+  .viewfinder {
+    position: relative;
+  }
+  .viewfinder > .tick {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-color: var(--red);
+    pointer-events: none;
+  }
+  .tick--tl {
+    left: -8px;
+    top: -8px;
+    border-left: 1px solid;
+    border-top: 1px solid;
+  }
+  .tick--tr {
+    right: -8px;
+    top: -8px;
+    border-right: 1px solid;
+    border-top: 1px solid;
+  }
+  .tick--bl {
+    left: -8px;
+    bottom: -8px;
+    border-left: 1px solid;
+    border-bottom: 1px solid;
+  }
+  .tick--br {
+    right: -8px;
+    bottom: -8px;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+  }
+
+  /* Underline that draws in. */
+  .u-link {
+    background-image: linear-gradient(var(--red), var(--red));
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 0.7s var(--ease-out);
+  }
+  .u-link:hover,
+  .u-link:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 28px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    overflow: hidden;
+    isolation: isolate;
+    cursor: pointer;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.5s var(--ease-out), border-color 0.5s;
+  }
+  .btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--red);
+    border-radius: inherit;
+    transform: scale(0, 1);
+    transform-origin: left;
+    transition: transform 0.6s var(--ease-out);
+  }
+  .btn:hover,
+  .btn:focus-visible {
+    color: var(--bone);
+    border-color: var(--red);
+  }
+  .btn:hover::before,
+  .btn:focus-visible::before {
+    transform: scale(1, 1);
+  }
+  .btn--red {
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--bone);
+  }
+  .btn--red::before {
+    background: var(--bone);
+  }
+  .btn--red:hover,
+  .btn--red:focus-visible {
+    color: var(--charcoal);
+    border-color: var(--bone);
+  }
+
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+
+  /* Film grain: one static SVG noise tile, low opacity. */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Letterbox page transition (template.tsx): two bars part like a widening shot. */
+  .letterbox {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 50.5vh;
+    z-index: 200;
+    background: var(--charcoal);
+    pointer-events: none;
+  }
+  .letterbox--top {
+    top: 0;
+    border-bottom: 1px solid var(--red);
+    animation: lb-top 1s var(--ease-in-out) 0.1s forwards;
+  }
+  .letterbox--bottom {
+    bottom: 0;
+    border-top: 1px solid var(--red);
+    animation: lb-bottom 1s var(--ease-in-out) 0.1s forwards;
+  }
+  @keyframes lb-top {
+    to {
+      transform: translateY(-101%);
+    }
+  }
+  @keyframes lb-bottom {
+    to {
+      transform: translateY(101%);
+    }
+  }
+  .page-in {
+    animation: page-in 1.1s var(--ease-out) 0.45s backwards;
+  }
+  @keyframes page-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* Film-strip sprockets. */
+  .sprockets {
+    height: 22px;
+    background-image: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--fg) 30%, transparent) 0 4px, transparent 4.5px);
+    background-size: 28px 22px;
+    background-repeat: repeat-x;
+  }
+
+  /* Illustration motifs (on-palette). */
+  .m-drift {
+    animation: m-drift 7s var(--ease-in-out) infinite alternate;
+  }
+  @keyframes m-drift {
+    to {
+      transform: translateX(-36px);
+    }
+  }
+  .m-play {
+    animation: m-play 6s linear infinite;
+  }
+  @keyframes m-play {
+    from {
+      transform: translateX(40px);
+    }
+    to {
+      transform: translateX(760px);
+    }
+  }
+  .m-flow {
+    stroke-dasharray: 14 10;
+    animation: m-flow 3s linear infinite;
+  }
+  @keyframes m-flow {
+    to {
+      stroke-dashoffset: -96;
+    }
+  }
+  .m-trace {
+    stroke-dasharray: 1400;
+    animation: m-trace 4s var(--ease-in-out) infinite;
+  }
+  @keyframes m-trace {
+    from {
+      stroke-dashoffset: 1400;
+    }
+    60%,
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .m-rise {
+    animation: m-rise 3.6s var(--ease-out) infinite alternate;
+  }
+  @keyframes m-rise {
+    from {
+      transform: scaleY(0.5);
+    }
+  }
+  .m-scan {
+    animation: m-scan 5s var(--ease-in-out) infinite alternate;
+  }
+  @keyframes m-scan {
+    from {
+      transform: translateY(80px);
+    }
+    to {
+      transform: translateY(400px);
+    }
+  }
+  .m-blink {
+    animation: m-blink 3s ease-in-out infinite;
+  }
+  @keyframes m-blink {
+    50% {
+      opacity: 0.25;
+    }
+  }
+  .m-float {
+    animation: m-float 5s var(--ease-in-out) infinite alternate;
+  }
+  @keyframes m-float {
+    to {
+      transform: translate(-14px, -10px);
+    }
+  }
+  .rec {
+    animation: m-blink 1.6s steps(2, jump-none) infinite;
+  }
+
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 260;
+    pointer-events: none;
+  }
+}
+
+@media (pointer: coarse) {
+  .cursor {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

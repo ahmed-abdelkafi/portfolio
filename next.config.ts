@@ -1,9 +1,14 @@
 import type { NextConfig } from "next";
 
+/**
+ * The whole site is static, so it is exported to plain HTML/CSS/JS (`out/`)
+ * and served by Cloudflare Workers static assets (see wrangler.jsonc).
+ */
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  output: "export",
+  trailingSlash: false,
+  images: { unoptimized: true },
+  experimental: { globalNotFound: true },
   turbopack: {
     rules: {
       "*.css": {

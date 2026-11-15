@@ -11,7 +11,7 @@ import Loader from "@/components/Loader";
 import ThemeProvider, { themeBootScript } from "@/components/ThemeProvider";
 import ThemeCustomizer from "@/components/ThemeCustomizer";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ahmed-abdelkafi.dev";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

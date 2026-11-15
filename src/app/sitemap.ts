@@ -3,7 +3,7 @@ import { en } from "@/content/en";
 
 export const dynamic = "force-static";
 
-const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ahmed-abdelkafi.dev";
 
 const entry = (path: string, priority: number): MetadataRoute.Sitemap[number] => ({
   url: `${base}/en${path}`,

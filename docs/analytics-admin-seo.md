@@ -44,7 +44,7 @@ Control, bots and crawlers (UA list + Cloudflare verified bots), any origin not 
 Abuse protection on `/api/collect`: origin allow-list, 2 KB payload cap, strict validation of every field,
 UUID de-duplication (`INSERT OR IGNORE`), 60 events/minute per visitor, and the endpoint always answers 204.
 
-Retention (daily cron at 03:17 UTC): events 395 days, heartbeats 2 days, salts 2 days, login attempts 1 day,
+Retention (run by the Worker at most once every 24 h, no cron needed): events 395 days, heartbeats 2 days, salts 2 days, login attempts 1 day,
 expired sessions, Search Console cache 7 days.
 
 ## Admin authentication

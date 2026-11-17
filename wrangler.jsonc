@@ -24,14 +24,18 @@
       "migrations_dir": "migrations"
     }
   ],
+  // Visit alerts by email (Cloudflare Email Routing must be enabled on the zone, destination verified).
+  "send_email": [{ "name": "NOTIFY", "destination_address": "abdelkafi.ahmed.techsup@gmail.com" }],
   "vars": {
+    "NOTIFY_FROM": "alerts@ahmed-abdelkafi.dev",
+    "NOTIFY_TO": "abdelkafi.ahmed.techsup@gmail.com",
     "SITE_HOSTS": "ahmed-abdelkafi.dev,ahmed-abdelkafi.abdelkafi-ahmed-techsup.workers.dev",
     "SITE_URL": "https://ahmed-abdelkafi.dev",
     // Optional Search Console integration: set the property here and the key with
     // `npx wrangler secret put GSC_SERVICE_ACCOUNT`.
     "GSC_PROPERTY": "sc-domain:ahmed-abdelkafi.dev"
   },
-  // Daily housekeeping (retention) at 03:17 UTC.
-  "triggers": { "crons": ["17 3 * * *"] },
+  // No cron trigger: retention runs from the Worker at most once a day (see housekeeping in worker/index.ts).
+  "triggers": { "crons": [] },
   "observability": { "enabled": true }
 }

@@ -7,6 +7,12 @@ export interface Env {
   SITE_HOSTS: string;
   /** Public site origin, e.g. https://ahmed-abdelkafi.dev (used by the SEO health check). */
   SITE_URL: string;
+  /** Cloudflare Email Routing binding for visit alerts (destination must be a verified address). */
+  NOTIFY?: SendEmail;
+  /** Sender on the Email Routing domain, e.g. alerts@ahmed-abdelkafi.dev. */
+  NOTIFY_FROM?: string;
+  /** Verified destination address that receives the alerts. */
+  NOTIFY_TO?: string;
   /** Optional secret: Google service-account JSON key with read access to the Search Console property. */
   GSC_SERVICE_ACCOUNT?: string;
   /** Optional: Search Console property, e.g. "sc-domain:ahmed-abdelkafi.dev". */

@@ -22,6 +22,10 @@ export default function SettingsPage() {
 
   return (
     <div className="grid gap-6 xl:grid-cols-2">
+      <Panel title="Email alerts" note="One email per new visit">
+        <NotificationSettings />
+      </Panel>
+
       <Panel title="Exclude this device" note="Your own visits">
         <DeviceExclusion />
       </Panel>
@@ -196,5 +200,97 @@ function PasswordForm({ onDone }: { onDone: () => void }) {
         {busy ? "Saving…" : "Update password"}
       </button>
     </form>
+  );
+}
+
+type Notif = { enabled: boolean; dailyCap: number; configured: boolean; to: string | null; sentToday: number };
+
+function NotificationSettings() {
+  const state = useApi<Notif>("/api/admin/notifications");
+  const [cap, setCap] = useState<string>("");
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const save = async (patch: Partial<Pick<Notif, "enabled" | "dailyCap">>) => {
+    setBusy(true);
+    setMsg(null);
+    try {
+      await api("/api/admin/notifications", { method: "POST", body: JSON.stringify(patch) });
+      state.reload();
+      setMsg({ ok: true, text: "Saved." });
+    } catch (e) {
+      setMsg({ ok: false, text: e instanceof ApiError ? e.message : "Could not save." });
+    } finally {
+      setBusy(false);
+    }
+  };
+  const test = async () => {
+    setBusy(true);
+    setMsg(null);
+    try {
+      await api("/api/admin/notifications/test", { method: "POST" });
+      setMsg({ ok: true, text: "Test email sent. Check your inbox (and spam folder the first time)." });
+    } catch (e) {
+      setMsg({ ok: false, text: e instanceof ApiError ? e.message : "Sending failed." });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Async state={state}>
+      {(n) => (
+        <div className="space-y-5">
+          <p className="text-[13.5px] leading-relaxed text-[var(--muted)]">
+            When someone opens the portfolio, you receive one email per visit (not per page) with the approximate country, where they came from, the page they landed on and their device. No personal data. Your own visits never trigger an alert.
+          </p>
+          {!n.configured && (
+            <p className="border-l-2 border-[var(--red)] bg-[var(--red-soft)] px-3 py-2 text-[13px]">
+              Email sending is not configured on the Worker yet (Cloudflare Email Routing).
+            </p>
+          )}
+          <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-[13.5px]">
+            <dt className="label pt-0.5">Sent to</dt>
+            <dd className="mono text-[12.5px]">{n.to ?? "—"}</dd>
+            <dt className="label pt-0.5">Today</dt>
+            <dd className="mono text-[12.5px]">
+              {n.sentToday} / {n.dailyCap} alerts
+            </dd>
+          </dl>
+          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[var(--line)] pt-4">
+            <span className="text-[14px] font-medium">{n.enabled ? "Alerts are on" : "Alerts are off"}</span>
+            <button type="button" className={`btn-adm ${n.enabled ? "btn-ghost" : ""}`} disabled={busy} onClick={() => save({ enabled: !n.enabled })}>
+              {n.enabled ? "Turn alerts off" : "Turn alerts on"}
+            </button>
+          </div>
+          <form
+            className="flex flex-wrap items-end gap-3"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const v = Number(cap);
+              if (Number.isInteger(v) && v >= 1 && v <= 500) save({ dailyCap: v });
+            }}
+          >
+            <div>
+              <label className="label" htmlFor="cap">
+                Max alerts per day
+              </label>
+              <input id="cap" type="number" min={1} max={500} placeholder={String(n.dailyCap)} value={cap} onChange={(e) => setCap(e.target.value)} className="field w-28" />
+            </div>
+            <button type="submit" className="btn-adm btn-ghost" disabled={busy || !cap}>
+              Save limit
+            </button>
+            <button type="button" className="btn-adm" disabled={busy || !n.configured} onClick={test}>
+              Send a test email
+            </button>
+          </form>
+          {msg && (
+            <p role="status" className={`text-[13px] ${msg.ok ? "" : "text-[var(--red)]"}`}>
+              {msg.text}
+            </p>
+          )}
+        </div>
+      )}
+    </Async>
   );
 }

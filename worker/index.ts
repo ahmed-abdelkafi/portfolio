@@ -1,6 +1,7 @@
 import type { Env } from "./env";
 import { changePassword, currentAdmin, listSessions, login, logout, revokeOtherSessions } from "./lib/auth";
 import { collect } from "./lib/collect";
+import { notificationSettings, sendTestNotification, updateNotificationSettings } from "./lib/notify";
 import { searchConsole } from "./lib/gsc";
 import { seoHealth } from "./lib/seo";
 import { badRange, behavior, devices, geography, overview, pages, parseRange, realtime, sources, visitors } from "./lib/stats";
@@ -27,6 +28,29 @@ const withHeaders = (res: Response, headers: Record<string, string>) => {
   for (const [k, v] of Object.entries(headers)) out.headers.set(k, v);
   return out;
 };
+
+/** Data retention, run at most once per 24 h (no cron needed: the free plan's cron slots are used elsewhere). */
+async function housekeeping(env: Env) {
+  const now = Date.now();
+  const day = 86_400_000;
+  const claimed = await env.DB.prepare(
+    `INSERT INTO settings (key, value) VALUES ('last_housekeeping', ?1)
+     ON CONFLICT(key) DO UPDATE SET value = excluded.value WHERE CAST(settings.value AS INTEGER) < ?2
+     RETURNING value`,
+  )
+    .bind(String(now), now - day)
+    .first();
+  if (!claimed) return; // already done in the last 24 h
+  await env.DB.batch([
+    env.DB.prepare("DELETE FROM events WHERE ts < ?1").bind(now - RETENTION_DAYS * day),
+    env.DB.prepare("DELETE FROM events WHERE type = 'ping' AND ts < ?1").bind(now - 2 * day),
+    env.DB.prepare("DELETE FROM salts WHERE day < ?1").bind(utcDay(now - day)),
+    env.DB.prepare("DELETE FROM login_attempts WHERE ts < ?1").bind(now - day),
+    env.DB.prepare("DELETE FROM admin_sessions WHERE expires_at < ?1").bind(now),
+    env.DB.prepare("DELETE FROM gsc_cache WHERE fetched_at < ?1").bind(now - 7 * day),
+    env.DB.prepare("DELETE FROM notify_log WHERE day < ?1").bind(utcDay(now - 30 * day)),
+  ]);
+}
 
 const redirect = (to: string, req: Request) =>
   withHeaders(Response.redirect(new URL(to, req.url).toString(), 302), { "cache-control": "no-store" });
@@ -58,11 +82,11 @@ async function serveAdminPage(req: Request, env: Env, url: URL) {
   return withHeaders(res, ADMIN_HEADERS);
 }
 
-async function handleApi(req: Request, env: Env, url: URL) {
+async function handleApi(req: Request, env: Env, url: URL, ctx: ExecutionContext) {
   const { pathname } = url;
   const method = req.method;
 
-  if (pathname === "/api/collect") return method === "POST" ? collect(req, env) : error(405, "Method not allowed");
+  if (pathname === "/api/collect") return method === "POST" ? collect(req, env, ctx) : error(405, "Method not allowed");
 
   if (!pathname.startsWith("/api/admin/")) return error(404, "Not found");
   if (pathname === "/api/admin/login") return method === "POST" ? login(req, env) : error(405, "Method not allowed");
@@ -75,6 +99,8 @@ async function handleApi(req: Request, env: Env, url: URL) {
   if (method === "POST") {
     if (pathname === "/api/admin/password") return changePassword(req, env, admin);
     if (pathname === "/api/admin/sessions/revoke") return revokeOtherSessions(req, env, admin);
+    if (pathname === "/api/admin/notifications") return updateNotificationSettings(req, env);
+    if (pathname === "/api/admin/notifications/test") return sendTestNotification(req, env);
     return error(404, "Not found");
   }
   if (method !== "GET") return error(405, "Method not allowed");
@@ -84,6 +110,8 @@ async function handleApi(req: Request, env: Env, url: URL) {
       return json({ username: admin.username });
     case "/api/admin/sessions":
       return listSessions(req, env, admin);
+    case "/api/admin/notifications":
+      return notificationSettings(env);
     case "/api/admin/realtime":
       return realtime(env);
     case "/api/admin/seo/health":
@@ -126,10 +154,13 @@ async function handleApi(req: Request, env: Env, url: URL) {
 }
 
 const worker = {
-  async fetch(req: Request, env: Env): Promise<Response> {
+  async fetch(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(req.url);
     try {
-      if (url.pathname.startsWith("/api/")) return await handleApi(req, env, url);
+      if (url.pathname.startsWith("/api/")) {
+        ctx.waitUntil(housekeeping(env).catch((e) => console.error("housekeeping", e instanceof Error ? e.message : e)));
+        return await handleApi(req, env, url, ctx);
+      }
       if (url.pathname === "/admin" || url.pathname.startsWith("/admin/")) return await serveAdminPage(req, env, url);
       const segment = rscSegment(url);
       if (segment) return env.ASSETS.fetch(new Request(segment, req));
@@ -140,19 +171,6 @@ const worker = {
     }
   },
 
-  /** Daily housekeeping: data retention and removal of short-lived records. */
-  async scheduled(_event: ScheduledController, env: Env): Promise<void> {
-    const now = Date.now();
-    const day = 86_400_000;
-    await env.DB.batch([
-      env.DB.prepare("DELETE FROM events WHERE ts < ?1").bind(now - RETENTION_DAYS * day),
-      env.DB.prepare("DELETE FROM events WHERE type = 'ping' AND ts < ?1").bind(now - 2 * day),
-      env.DB.prepare("DELETE FROM salts WHERE day < ?1").bind(utcDay(now - day)),
-      env.DB.prepare("DELETE FROM login_attempts WHERE ts < ?1").bind(now - day),
-      env.DB.prepare("DELETE FROM admin_sessions WHERE expires_at < ?1").bind(now),
-      env.DB.prepare("DELETE FROM gsc_cache WHERE fetched_at < ?1").bind(now - 7 * day),
-    ]);
-  },
 } satisfies ExportedHandler<Env>;
 
 export default worker;

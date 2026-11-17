@@ -1,5 +1,6 @@
 import type { Env } from "../env";
 import { currentAdmin } from "./auth";
+import { notifyNewVisit } from "./notify";
 import { classifySource } from "./source";
 import { isBot, parseUA, screenBucket } from "./ua";
 import { clientIp, randomToken, sha256, utcDay } from "./util";
@@ -40,7 +41,7 @@ async function dailySalt(env: Env, day: string) {
  * POST /api/collect — cookie-free event intake.
  * Always answers 204 so callers learn nothing about filtering decisions.
  */
-export async function collect(req: Request, env: Env) {
+export async function collect(req: Request, env: Env, ctx?: ExecutionContext) {
   const hosts = env.SITE_HOSTS.split(",").map((h) => h.trim().toLowerCase());
   const origin = req.headers.get("origin");
   let originHost = "";
@@ -142,5 +143,24 @@ export async function collect(req: Request, env: Env) {
       target,
     )
     .run();
+
+  // One email alert per new visit (session), sent after the response.
+  if (!recent?.session && type === "pageview" && ctx) {
+    ctx.waitUntil(
+      notifyNewVisit(env, {
+        path,
+        country: typeof cf?.country === "string" ? cf.country : null,
+        region: typeof cf?.region === "string" ? cf.region : null,
+        source,
+        medium,
+        campaign,
+        device,
+        os,
+        browser,
+        returning,
+        ts: now,
+      }),
+    );
+  }
   return noContent();
 }

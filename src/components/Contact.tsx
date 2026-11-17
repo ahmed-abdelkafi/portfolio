@@ -126,9 +126,14 @@ export default function Contact() {
         <footer className="mono mt-28 flex flex-col gap-4 border-t hair pt-6 opacity-70 md:flex-row md:justify-between">
           <span>© 2026 {person.name}</span>
           <span>{t.built}</span>
-          <a href="#top" className="u-link">
-            {t.top}
-          </a>
+          <span className="flex gap-6">
+            <a href={`/${locale}/privacy`} className="u-link">
+              {locale === "fr" ? "Confidentialité" : "Privacy"}
+            </a>
+            <a href="#top" className="u-link">
+              {t.top}
+            </a>
+          </span>
         </footer>
       </div>
     </section>

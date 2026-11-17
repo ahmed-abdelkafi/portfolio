@@ -11,6 +11,7 @@ import Showcase from "@/components/Showcase";
 import ArchDiagram from "@/components/ArchDiagram";
 import LayerBadges from "@/components/LayerBadges";
 import { architectures, LAYERS, layerName } from "@/content/architecture";
+import { caseStudyDescription, caseStudyGraph, ldJson, siteUrl } from "@/lib/seo";
 
 export function generateStaticParams() {
   return locales.flatMap((locale) => en.projects.map((p) => ({ locale, slug: p.slug })));
@@ -22,15 +23,17 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/work/[sl
   const c = getContent(locale);
   const project = getProject(c, slug);
   if (!project) return {};
+  const title = `${project.name}, ${project.kind}`;
+  const description = caseStudyDescription(project, locale);
+  const image = project.image
+    ? { url: project.image.src, width: 1920, height: 1200, alt: project.image.alt }
+    : { url: `/og/home-${locale}.png`, width: 1200, height: 630, alt: c.person.name };
   return {
-    title: `${project.name}, ${project.kind}`,
-    description: project.summary,
-    alternates: { canonical: `/${locale}/work/${slug}`, languages: { en: `/en/work/${slug}`, fr: `/fr/work/${slug}` } },
-    openGraph: {
-      title: `${project.name} · ${c.person.name}`,
-      description: project.summary,
-      images: project.image ? [{ url: project.image.src }] : [{ url: c.person.photo.src }],
-    },
+    title,
+    description,
+    alternates: { canonical: `/${locale}/work/${slug}`, languages: { en: `/en/work/${slug}`, fr: `/fr/work/${slug}`, "x-default": `/en/work/${slug}` } },
+    openGraph: { type: "article", siteName: c.person.name, locale: locale === "fr" ? "fr_FR" : "en_US", title: `${title} · ${c.person.name}`, description, url: `${siteUrl}/${locale}/work/${slug}`, images: [image] },
+    twitter: { card: "summary_large_image", title: `${title} · ${c.person.name}`, description, images: [image.url] },
   };
 }
 
@@ -48,6 +51,7 @@ export default async function CaseStudy({ params }: PageProps<"/[locale]/work/[s
 
   return (
     <main id="main">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(caseStudyGraph(c, project)) }} />
       <article>
         <header data-scene="dark" className="relative pb-20 pt-32 md:pt-40">
           <div className="shell">
@@ -214,9 +218,14 @@ export default async function CaseStudy({ params }: PageProps<"/[locale]/work/[s
       </Link>
       <footer className="shell mono flex justify-between gap-4 py-8 opacity-70">
         <span>© 2026 {c.person.name}</span>
-        <Link href={homeHref(locale, "contact")} className="u-link">
-          {t.contact}
-        </Link>
+        <span className="flex gap-6">
+          <Link href={`/${locale}/privacy`} className="u-link">
+            {fr ? "Confidentialité" : "Privacy"}
+          </Link>
+          <Link href={homeHref(locale, "contact")} className="u-link">
+            {t.contact}
+          </Link>
+        </span>
       </footer>
       <Reveals />
       <SceneShift initial="dark" />

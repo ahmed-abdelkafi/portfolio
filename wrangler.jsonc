@@ -1,13 +1,37 @@
-// Static-assets-only Worker: serves the Next.js static export in ./out.
+// Static export (./out) + a small Worker for /api/* and /admin* (analytics, admin auth).
 // Deploy with: npm run deploy
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ahmed-abdelkafi",
   "account_id": "15780e7671cf26656615e325996f1afa",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-10-15",
+  // Custom domain, declared so deploys keep it attached.
+  "routes": [{ "pattern": "ahmed-abdelkafi.dev", "custom_domain": true }],
   "assets": {
     "directory": "./out",
+    "binding": "ASSETS",
     "not_found_handling": "404-page",
-    "html_handling": "auto-trailing-slash"
-  }
+    "html_handling": "auto-trailing-slash",
+    // Everything else is served straight from static assets, without invoking the Worker.
+    "run_worker_first": ["/api/*", "/admin", "/admin/*", "/*/__next.*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "portfolio-analytics",
+      "database_id": "6406f118-a803-4bb4-823b-dea13eb97479",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "SITE_HOSTS": "ahmed-abdelkafi.dev,ahmed-abdelkafi.abdelkafi-ahmed-techsup.workers.dev",
+    "SITE_URL": "https://ahmed-abdelkafi.dev",
+    // Optional Search Console integration: set the property here and the key with
+    // `npx wrangler secret put GSC_SERVICE_ACCOUNT`.
+    "GSC_PROPERTY": "sc-domain:ahmed-abdelkafi.dev"
+  },
+  // Daily housekeeping (retention) at 03:17 UTC.
+  "triggers": { "crons": ["17 3 * * *"] },
+  "observability": { "enabled": true }
 }

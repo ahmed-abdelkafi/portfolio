@@ -62,11 +62,19 @@ Where sources disagreed, the most recent one was used:
 
 ## Deploy
 
-Static export served by Cloudflare Workers static assets (`wrangler.jsonc`, account 15780e…1afa):
+Static export + a small Worker (analytics API, admin gate) on Cloudflare (`wrangler.jsonc`), custom domain
+https://ahmed-abdelkafi.dev, D1 database `portfolio-analytics`.
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://ahmed-abdelkafi.abdelkafi-ahmed-techsup.workers.dev npm run deploy
+npm run deploy            # next build && wrangler deploy (site URL defaults to https://ahmed-abdelkafi.dev)
+npm run db:migrate        # apply D1 migrations (remote)
+npm run admin:create      # create / reset the administrator (interactive, password never stored in clear)
 ```
+
+## Analytics, admin and SEO
+
+Private dashboard at `/admin` (cookie-free first-party analytics, Search Console integration, SEO health).
+Setup, data model, privacy and Google Search Console steps: [docs/analytics-admin-seo.md](docs/analytics-admin-seo.md).
 
 ## Theme customizer
 

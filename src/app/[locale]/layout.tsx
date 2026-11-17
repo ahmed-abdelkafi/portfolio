@@ -10,33 +10,36 @@ import Cursor from "@/components/Cursor";
 import Loader from "@/components/Loader";
 import ThemeProvider, { themeBootScript } from "@/components/ThemeProvider";
 import ThemeCustomizer from "@/components/ThemeCustomizer";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ahmed-abdelkafi.dev";
+import Analytics from "@/components/Analytics";
+import { homeMeta, ldJson, siteGraph, siteUrl } from "@/lib/seo";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
+/** Defaults shared by every page of a locale; each page sets its own title, description and canonical. */
 export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const { person } = getContent(locale);
-  const description = `${person.name}, ${person.role} · ${person.location}. ${person.intro}`;
+  const meta = homeMeta[locale];
   return {
     metadataBase: new URL(siteUrl),
-    title: { default: `${person.name} · ${person.role}`, template: `%s · ${person.name}` },
-    description,
-    authors: [{ name: person.name }],
-    alternates: { canonical: `/${locale}`, languages: { en: "/en", fr: "/fr", "x-default": "/en" } },
+    title: { default: meta.title, template: `%s · ${person.name}` },
+    description: meta.description,
+    applicationName: person.name,
+    authors: [{ name: person.name, url: `${siteUrl}/${locale}` }],
+    creator: person.name,
+    robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
+    formatDetection: { telephone: false, email: false, address: false },
     openGraph: {
       type: "website",
       locale: locale === "fr" ? "fr_FR" : "en_US",
-      title: `${person.name} · ${person.role}`,
-      description,
+      alternateLocale: locale === "fr" ? ["en_US"] : ["fr_FR"],
       siteName: person.name,
-      images: [{ url: person.photo.src, width: 1200, height: 1200, alt: person.photo.alt }],
+      images: [{ url: `/og/home-${locale}.png`, width: 1200, height: 630, alt: meta.ogAlt }],
     },
-    twitter: { card: "summary", title: person.name, description },
+    twitter: { card: "summary_large_image", images: [`/og/home-${locale}.png`] },
   };
 }
 
@@ -46,21 +49,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const content = getContent(locale);
-  const { person, projects } = content;
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: person.name,
-    jobTitle: person.role,
-    image: `${siteUrl}${person.photo.src}`,
-    email: `mailto:${person.email}`,
-    address: { "@type": "PostalAddress", addressLocality: "Sfax", addressCountry: "TN" },
-    sameAs: person.links.map((l) => l.href),
-    knowsLanguage: ["ar", "fr", "en"],
-    knowsAbout: ["React", "Next.js", "Vue 3", "TypeScript", "Nest.js", "PostgreSQL", "Cloudflare Workers"],
-    workExample: projects.filter((p) => p.live).map((p) => ({ "@type": "CreativeWork", name: p.name, url: p.live?.href })),
-  };
+  const jsonLd = siteGraph(content);
 
   return (
     <html lang={locale} className={fontVars} data-scene="dark" suppressHydrationWarning>
@@ -73,12 +62,13 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           <a href="#main" className="skip-link mono">
             {content.ui.skip}
           </a>
-          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(jsonLd) }} />
           <Loader />
           <SmoothScroll />
           <Nav />
           {children}
           <ThemeCustomizer />
+          <Analytics />
           <Cursor />
           <div className="grain" aria-hidden />
           </ThemeProvider>
